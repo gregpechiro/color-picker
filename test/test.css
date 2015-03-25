@@ -1,0 +1,63 @@
+.button-continue {
+    background: #0000ff;
+    borger: #0000ff;
+    color: #ffffff;
+}
+
+.button-continue:hover {
+    background: #000099;
+    border: #000099;
+    color: #ffffff;
+}
+
+.button-submit {
+    background: #00ff00;
+    border: #00ff00;
+    color: #ffffff;
+}
+
+.button-submit:hover {
+    background: #009900;
+    border: #009900;
+    color: #ffffff;
+}
+
+.button-cancel {
+    background: #ff0000;
+    background: #ff0000;
+    color: #ffffff;
+}
+
+.button-cancel:hover {
+    background: #990000;
+    border: #990000;
+    color: #ffffff;
+}
+
+a:link {
+    color: #FF0000;
+}
+
+a:visited {
+    color: #00FF00;
+}
+
+a:hover {
+    color: #FF00FF;
+}
+
+.ourNavbar-brand {
+    color: #ff0000;
+}
+
+.ourNavbar {
+    color: #FF0000;
+}
+
+.ourNavbar a:visited {
+    color: #00FF00;
+}
+
+.ourNavbar a:hover {
+    color: #FF00FF;
+}

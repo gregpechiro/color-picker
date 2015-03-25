@@ -1,0 +1,32 @@
+{
+  "links" : {
+    "main" : "",
+    "hover" : "",
+    "clicked" : ""
+  },
+  "buttons" : {
+    "continue" : {
+      "main" : "",
+      "hover" : ""
+    },
+    "submit" : {
+      "main" : "",
+      "hover" : ""
+    },
+    "cancel" : {
+      "main" : "",
+      "hover" : ""
+    }
+  },
+  "navbar" : {
+    "links" : {
+      "main" : "",
+      "hover" : "",
+      "clicked" : ""
+    },
+    "color" : "",
+    "accent" : "",
+    "border" : "",
+    "brand" : ""
+  }
+}
