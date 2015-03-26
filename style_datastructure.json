@@ -2,7 +2,7 @@
   "links" : {
     "main" : "",
     "hover" : "",
-    "clicked" : ""
+    "visited" : ""
   },
   "buttons" : {
     "continue" : {
@@ -21,8 +21,7 @@
   "navbar" : {
     "links" : {
       "main" : "",
-      "hover" : "",
-      "clicked" : ""
+      "hover" : ""
     },
     "color" : "",
     "accent" : "",

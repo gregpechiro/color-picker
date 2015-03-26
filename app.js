@@ -2,7 +2,7 @@
 
 var app = angular.module('colorChooser', ['ngResource']);
 
-app.controller('MainController', ['$scope', 'ColorService', function($scope, ColorService) {
+app.controller('MainController', ['$scope', '$interpolate', 'ColorService', function($scope, $interpolate, ColorService) {
 
     $scope.active = 'links';
 
@@ -13,6 +13,16 @@ app.controller('MainController', ['$scope', 'ColorService', function($scope, Col
     $scope.save = function() {
         ColorService.save($scope.site);
     };
+
+    $scope.test1 = "It Worked";
+    $scope.test2 = "huray";
+
+    $scope.tryThis = function() {
+        var exp = $interpolate(css);
+        var result = exp($scope);
+        console.log(result);
+    };
+
 
     ColorService.get().$promise.then(function(data) {
         $scope.site = data;
