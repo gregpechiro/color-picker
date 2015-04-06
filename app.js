@@ -1,45 +1,78 @@
 'use strict';
 
-var app = angular.module('colorChooser', ['ngResource']);
+var app = angular.module('colorChooser', [
+	'ngResource',
+	'ngRoute',
+	'controllers',
+	'services'
+]);
 
-app.controller('MainController', ['$scope', '$interpolate', 'ColorService', function($scope, $interpolate, ColorService) {
+app.config(['$routeProvider', function($routeProvider) {
+	$routeProvider
+		.when('/', {
+			templateUrl: 'login.html',
+		    controller: 'LoginController'
+		})
+		.when('/admin', {
+			resolve: {
+		        factory: checkAdmin
+		    },
+			templateUrl: 'user.html',
+			controller: 'UserController'
 
-    $scope.active = 'links';
-
-    $scope.linkOneHover = false;
-
-    $scope.menuLink = false;
-
-    $scope.save = function() {
-        ColorService.save($scope.site);
-    };
-
-    $scope.test1 = "It Worked";
-    $scope.test2 = "huray";
-
-    $scope.tryThis = function() {
-        var exp = $interpolate(css);
-        var result = exp($scope);
-        console.log(result);
-    };
-
-
-    ColorService.get().$promise.then(function(data) {
-        $scope.site = data;
-        $scope.link = {color : $scope.site.links.main};
-        $scope.buttonContinue = {background : $scope.site.buttons.continue.main, color : $scope.site.buttons.continue.text};
-        $scope.buttonSubmit = {background : $scope.site.buttons.submit.main, color : $scope.site.buttons.submit.text};
-        $scope.buttonCancel = {background : $scope.site.buttons.cancel.main, color : $scope.site.buttons.cancel.text};
-        $scope.navLink = {color : $scope.site.navbar.links.main};
-        $scope.navLinkHover={color : $scope.site.navbar.links.hover}
-        $scope.navbarColor = {background : $scope.site.navbar.color, border:'3px solid ' + $scope.site.navbar.border}
-        $scope.navbarBrand = {color : $scope.site.navbar.brand}
-    });
-
+		})
+		.when('/test/:userId/:page', {
+			resolve: {
+			    factory: checkAuth
+			},
+			templateUrl: function(parameters) {
+				return 'test/' + parameters.page + '.html';
+			},
+			controller: 'TestController'
+		})
+        .when('/color/:userId', {
+			resolve: {
+		        factory: checkAdmin
+		    },
+            templateUrl: 'color.html',
+            controller: 'ColorController'
+        })
+		.when('/error', {
+		    templateUrl: 'error.html'
+		})
+		.when('/logout', {
+		    resolve: {
+		        factory : logout
+		    },
+		    redirectTo : '/'
+		})
+		.otherwise({
+			redirectTo: '/'
+		});
 }]);
 
-app.factory('ColorService', ['$resource', function($resource){
+var checkAuth = function($cookieStore, $location) {
+    var user = $cookieStore.get('user')
+    if (user != null && user != {}) {
+        return true;
+    } else {
+        $location.path('/');
+    }
+};
 
-    return $resource('http://localhost:8080/color');
+var checkAdmin = function($cookieStore, $location) {
+    var user = $cookieStore.get('user');
+    if (user != null && user != {}) {
+        if (user.role == 'ROLE_ADMIN') {
+            return true;
+        } else {
+            $location.path('/error');
+        }
+    } else {
+        $location.path('/');
+    }
+}
 
-}]);
+var logout = function($cookieStore) {
+    $cookieStore.remove('user');
+};
