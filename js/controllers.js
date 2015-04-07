@@ -35,6 +35,8 @@ controllers.controller('ColorController', ['$scope', '$rootScope', '$interpolate
 
     $rootScope.genCss= '';
 
+    $scope.userId = $routeParams.userId;
+
     $scope.active = 'links';
 
     $scope.site = {};
@@ -45,7 +47,7 @@ controllers.controller('ColorController', ['$scope', '$rootScope', '$interpolate
 
     $scope.save = function() {
         ColorService.save($scope.site).$promise.then(function() {
-            $scope.site = ColorService.get({userId: $routeParams.userId});
+            $scope.site = ColorService.get({userId: $scope.userId});
             $scope.message = "Successfully saved colors"
         });
     };
@@ -81,11 +83,23 @@ controllers.controller('LoginController', ['$location', '$scope', '$rootScope', 
     function($location, $scope, $rootScope, $cookieStore, LoginService) {
 
     var user = $cookieStore.get('user');
+
+    function endPoint(u) {
+        switch (u.theme.toLowerCase()) {
+            case 'blog':
+                return '/blog/index.html';
+            case 'business':
+                return '/business/index.html';
+            default:
+                return '/test/test.html';
+        }
+    }
+
     if (user != undefined) {
         if (user.role == 'ROLE_ADMIN') {
             $location.path('/admin');
         } else{
-            $location.path('/test/' + user.id + '/test');
+            $location.path(endPoint(user));
         }
     }
 
@@ -98,11 +112,11 @@ controllers.controller('LoginController', ['$location', '$scope', '$rootScope', 
         } else {
             LoginService.login($scope.username, $scope.password).then(function(data) {
                 if (data) {
-                    var user = $cookieStore.get('user');
-                    if (user.role == 'ROLE_ADMIN') {
+                    var newUser = $cookieStore.get('user');
+                    if (newUser.role == 'ROLE_ADMIN') {
                         $location.path('/admin');
                     } else{
-                        $location.path('/test/' + user.id);
+                        $location.path(endPoint(newUser));
                     }
                 } else {
                     $scope.err = true;
@@ -115,14 +129,20 @@ controllers.controller('LoginController', ['$location', '$scope', '$rootScope', 
 }]);
 
 
-controllers.controller('TestController', ['$scope', '$rootScope', '$interpolate', 'ColorService', '$routeParams',
-    function($scope, $rootScope, $interpolate, ColorService, $routeParams) {
+controllers.controller('PreviewController', ['$scope', '$rootScope', '$interpolate', 'ColorService', '$cookieStore',
+    function($scope, $rootScope, $interpolate, ColorService, $cookieStore) {
 
-    if ($rootScope.genCss == '' || $rootScope.genCss == null) {
-        ColorService.get({userId: $routeParams.userId}).$promise.then(function(data) {
+    $scope.user = $cookieStore.get('user');
+
+        ColorService.get({userId: $scope.user.id}).$promise.then(function(data) {
             $scope.site = data;
             var exp = $interpolate(css);
             $rootScope.genCss = exp($scope);
         });
-    }
+}]);
+
+controllers.controller('CssController', ['$scope', '$routeParams', 'ColorService', function($scope, $routeParams, ColorService) {
+
+    $scope.site = ColorService.get({userId: $routeParams.userId});
+
 }]);

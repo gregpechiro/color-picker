@@ -1,3 +1,4 @@
+<br>
 <div class="container" ng-show="message">
 	<div class="row">
 		<div class="alert alert-success alert-dismissable">
@@ -17,7 +18,10 @@
                     <li role="presentation" ng-click="active='navbar'" ng-class="{active:active=='navbar'}"><a href="">Navbar</a></li>
                 </ul>
             </div>
-            <button class="btn btn-primary" name="save" ng-click="save()">Save Colors</button>
+			<div class="btn-group" role="group">
+            	<button class="btn btn-primary" name="save" ng-click="save()">Save Colors</button>
+				<a href="#/css/{{ userId }}" target="_blank" class="btn btn-success">Get CSS</a>
+			</div>
         </div>
         <br>
         <br>

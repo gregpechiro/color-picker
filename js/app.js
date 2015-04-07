@@ -4,7 +4,8 @@ var app = angular.module('colorChooser', [
 	'ngResource',
 	'ngRoute',
 	'controllers',
-	'services'
+	'services',
+	'directives'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -21,22 +22,20 @@ app.config(['$routeProvider', function($routeProvider) {
 			controller: 'UserController'
 
 		})
-		.when('/test/:userId/:page', {
-			resolve: {
-			    factory: checkAuth
-			},
-			templateUrl: function(parameters) {
-				return 'test/' + parameters.page + '.html';
-			},
-			controller: 'TestController'
-		})
-        .when('/color/:userId', {
+		.when('/color/:userId', {
 			resolve: {
 		        factory: checkAdmin
 		    },
             templateUrl: 'color.html',
             controller: 'ColorController'
         })
+		.when ('/css/:userId', {
+			resolve: {
+		        factory: checkAdmin
+		    },
+			templateUrl: 'css.html',
+			controller: 'CssController'
+		})
 		.when('/error', {
 		    templateUrl: 'error.html'
 		})
@@ -45,6 +44,42 @@ app.config(['$routeProvider', function($routeProvider) {
 		        factory : logout
 		    },
 		    redirectTo : '/'
+		})
+		.when('/test/:page', {
+			resolve: {
+			    factory: checkAuth
+			},
+			templateUrl: function(parameters) {
+				return 'test/' + parameters.page;
+			},
+			controller: 'PreviewController'
+		})
+		.when('/blog/:page', {
+			resolve: {
+			    factory: checkAuth
+			},
+			templateUrl: function(parameters) {
+				return 'blog/' + parameters.page;
+			},
+			controller: 'PreviewController',
+			css: [
+				'blog/css/clean-blog.min.css',
+				'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
+				'http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic',
+				'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+			]
+		})
+		.when('/business/:page', {
+			resolve: {
+			    factory: checkAuth
+			},
+			templateUrl: function(parameters) {
+				return 'business/' + parameters.page;
+			},
+			controller: 'PreviewController',
+			css: [
+				'business/css/modern-business.css',
+			]
 		})
 		.otherwise({
 			redirectTo: '/'
