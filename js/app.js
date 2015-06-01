@@ -77,9 +77,9 @@ app.config(['$routeProvider', function($routeProvider) {
 				return 'business/' + parameters.page;
 			},
 			controller: 'PreviewController',
-			css: [
-				'business/css/modern-business.css',
-			]
+		 	css: [
+		 		'business/css/modern-business.css'
+		 	]
 		})
 		.otherwise({
 			redirectTo: '/'
